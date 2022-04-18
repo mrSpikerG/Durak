@@ -9,11 +9,21 @@ namespace Durak
     class Card
     {
         public int NumValue { get; set; }
-        public string CharValue { get; set; }
+        public ICardType CardType { get; set; }
 
-        public Card()
+        public Card(int numValue, ICardType cardType)
+        {
+            NumValue = numValue;
+            CardType = cardType;
+        }
+
+        public override string ToString()
         {
 
+            Console.ForegroundColor = CardType.getColor();
+            return $"{NumValue}{CardType.getType()}";
         }
+
+
     }
 }
