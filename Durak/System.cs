@@ -1,4 +1,5 @@
 ﻿using Durak.CardTypes;
+using Durak.IRealisation.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace Durak
     {
         private Player[] Players = new Player[2];
 
-        private ICardType Trumpf;
-
+        public static ICardType Trumpf;
+        
 
 
         private Random rand = new Random();
@@ -26,25 +27,40 @@ namespace Durak
 
 
             generateNewDeck();
-
-
-
-            bool isGameEnd = false;
+            fillHand();
             do
             {
+                
+                Players[0].Act = new Attack();
+                Players[0].Act.action(Players[0], Players[1]);
 
-                int chose;
-                Console.WriteLine("1 - Выбрать карту чтобы побится");
-                Console.WriteLine("2 - Загребсти карты");
-                Console.WriteLine("3 - Сдаться");
-                do
+                fillHand();
+
+                for (int i = 0; i < Players.Length; i++)
                 {
-                    Console.Write("Ваш выбор: ");
-                    chose = int.Parse(Console.ReadLine());
-                } while (chose < 1 || chose > 3);
+                    if (Players[0].PlayerCards.Count == 0 || AllDeck.Count == 0)
+                    {
+                        Console.WriteLine($"Победил {Players[0].Name}");
+                        break;
+                    }
+                }
 
+                Console.Clear();
+                Players[1].Act = new Attack();
+                Players[1].Act.action(Players[1], Players[0]);
 
-            } while (!isGameEnd);
+                for (int i = 0; i < Players.Length; i++)
+                {
+                    if (Players[0].PlayerCards.Count == 0 || AllDeck.Count == 0)
+                    {
+                        Console.WriteLine($"Победил {Players[0].Name}");
+                        break;
+                    }
+                }
+
+                fillHand();
+                Console.Clear();
+            } while (true);
         }
 
         public void fillHand()
@@ -87,10 +103,15 @@ namespace Durak
         }
         public static void showDeckOnTable()
         {
-            for(int i = 0; i < DeckOnTable.Count; i++)
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < DeckOnTable.Count; i++)
             {
-                Console.Write($"{DeckOnTable[i]} ");
+                Console.ForegroundColor = DeckOnTable[i].CardType.getColor();
+                Console.Write($"{DeckOnTable[i].NumValue.ToString().Replace("11", "J").Replace("12", "Q").Replace("13", "K").Replace("14", "A")}{DeckOnTable[i].CardType.getType()} ");
             }
+            Console.Write("\n");
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

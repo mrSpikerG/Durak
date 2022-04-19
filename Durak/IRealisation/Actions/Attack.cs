@@ -5,24 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Durak.IRealisation.Action
+namespace Durak.IRealisation.Actions
 {
     class Attack : IAttack
     {
         public void action(Player player1, Player player2)
         {
+            player2.Act = new Defend();
             Console.WriteLine($"Вы нападаете на игрока {player2.Name}");
 
             bool isEnd = true;
             string yesOrNo;
 
-            Console.WriteLine(player1);
+            player1.showCards();
+
             Console.Write($"Укажите какой картой вы собираетесь нападать(1-{player1.PlayerCards.Count}): ");
             int chose = int.Parse(Console.ReadLine());
 
             //Перенос карты на стол
-            player1.PlayerCards.Remove(player1.PlayerCards[chose - 1]);
             System.DeckOnTable.Add(player1.PlayerCards[chose - 1]);
+            player1.PlayerCards.RemoveAt(chose-1);
 
 
             bool canAdd, isNormalAttack;
@@ -31,7 +33,7 @@ namespace Durak.IRealisation.Action
                 isNormalAttack = false;
                 Console.Clear();
                 System.showDeckOnTable();
-                Console.WriteLine(player1);
+                player1.showCards();
 
                 //Проверка может ли подкинуть
                 #region
@@ -67,8 +69,8 @@ namespace Durak.IRealisation.Action
                         if (isNormalAttack)
                         {
                             //Перенос карты на стол
-                            player1.PlayerCards.Remove(player1.PlayerCards[chose - 1]);
                             System.DeckOnTable.Add(player1.PlayerCards[chose - 1]);
+                            player1.PlayerCards.RemoveAt(chose - 1);
                         }
                     }
                     else
@@ -83,7 +85,7 @@ namespace Durak.IRealisation.Action
                 #endregion
 
             } while (!isEnd);
-
+            player2.Act.action(player2, player1);
         }
     }
 }

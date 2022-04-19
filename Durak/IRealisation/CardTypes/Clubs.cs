@@ -22,7 +22,7 @@ namespace Durak.CardTypes
 
         public ConsoleColor getColor()
         {
-            return ConsoleColor.Black;
+            return ConsoleColor.DarkGray;
         }
 
         public string getType()
