@@ -8,7 +8,10 @@ namespace Durak
 {
     interface ICardType
     {
+        public bool IsTrumpf { get; set; }
         public ConsoleColor getColor();
         public string getType();
+
+        public bool getTrumpf();
     }
 }

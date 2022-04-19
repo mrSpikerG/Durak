@@ -8,6 +8,16 @@ namespace Durak.CardTypes
 {
     class Spades : ICardType
     {
+        public bool IsTrumpf { get; set; }
+        public Spades()
+        {
+            IsTrumpf = false;
+        }
+
+        public bool getTrumpf()
+        {
+            return IsTrumpf;
+        }
         public ConsoleColor getColor()
         {
             return ConsoleColor.Black;

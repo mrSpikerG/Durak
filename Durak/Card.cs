@@ -21,9 +21,33 @@ namespace Durak
         {
 
             Console.ForegroundColor = CardType.getColor();
-            return $"{NumValue}{CardType.getType()}";
-        }
 
+            // Гениальное решение дабы избежать лишней запары с знатью
+            return $"{NumValue.ToString().Replace("11", "J").Replace("12", "Q").Replace("13", "K").Replace("14", "A")}{CardType.getType()}";
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is Card)
+            {
+                Card tmp = obj as Card;
+                //Если одинаковый тип
+                if (this.NumValue > tmp.NumValue && this.CardType.getType() == tmp.CardType.getType())
+                {
+                    return true;
+                }
+                //козырь
+                if (this.CardType.IsTrumpf && !tmp.CardType.IsTrumpf)
+                {
+                    return true;
+                }
+                if (this.CardType.IsTrumpf && tmp.CardType.IsTrumpf && this.NumValue > tmp.NumValue)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
 
     }
 }

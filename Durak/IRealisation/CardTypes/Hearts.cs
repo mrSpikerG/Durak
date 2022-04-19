@@ -8,6 +8,16 @@ namespace Durak.CardTypes
 {
     class Hearts : ICardType
     {
+        public bool IsTrumpf { get; set; }
+        public Hearts()
+        {
+            IsTrumpf = false;
+        }
+
+        public bool getTrumpf()
+        {
+            return IsTrumpf;
+        }
         public ConsoleColor getColor()
         {
             return ConsoleColor.Red;
